@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('csrf-token/', csrf_token_view, name='csrf_token'),
     path('get_user/', get_logged_in_user ,name ="get_user"),
+    path('create_employee/', EmployeeCreationView.as_view(), name='create_employee'),
 ]
