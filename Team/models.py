@@ -1,12 +1,13 @@
 from django.db import models
-
-
+from django.utils import timezone
 from django.db import models
 from Account.models import User
 import uuid
+
+
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name="employee")
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100) 
     email = models.EmailField(unique=True)
@@ -32,3 +33,23 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Task(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
+    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
+    assigner = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='assigner')
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    start_date = models.DateTimeField(auto_now_add=True)
+    deadline = models.DateField()
+    is_completed = models.BooleanField(default=False)
+    completed_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        if self.is_completed:
+            self.completed_date = timezone.now()
+        super().save(*args, **kwargs)
