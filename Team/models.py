@@ -7,7 +7,7 @@ import uuid
 
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name="employee")
+    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name="team_employee")
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100) 
     email = models.EmailField(unique=True)
@@ -29,7 +29,7 @@ class Employee(models.Model):
     end_date = models.DateField(null=True, blank=True)
 
     photo = models.ImageField(
-        upload_to='employee', null=True, blank=True)
+        upload_to='employee', null=True, blank=True , default="employee/default.webp")
 
     def __str__(self):
         return self.name
@@ -37,8 +37,8 @@ class Employee(models.Model):
 
 class Task(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
-    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
-    assigner = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='assigner')
+    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True)
+    assigner = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, related_name='assigner')
     title = models.CharField(max_length=100)
     description = models.TextField()
     start_date = models.DateTimeField(auto_now_add=True)
