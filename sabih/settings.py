@@ -40,12 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'Team',
     'Account',
-<<<<<<< HEAD
-    'Client'
-=======
     'drf_spectacular',
     'attendance',
->>>>>>> main
 ]
 
 REST_FRAMEWORK = {
