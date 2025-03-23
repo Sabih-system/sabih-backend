@@ -7,7 +7,7 @@ import uuid
 
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name="employee")
+    user = models.OneToOneField(User, on_delete=models.CASCADE , related_name="team_employee")
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100) 
     email = models.EmailField(unique=True)
