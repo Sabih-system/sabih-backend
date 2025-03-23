@@ -9,7 +9,6 @@ from Team.models import Employee, Task
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
-
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -24,7 +23,7 @@ class EmployeeCreationView(generics.CreateAPIView):
         user = self.request.user
         print('user', user.employee.role)
 
-        if hasattr(user, 'employee') and user.employee.role == "supervisor":
+        if hasattr(user, 'employee') and user.employee.role == "manager":
             serializer.save()
         else:
             raise PermissionDenied(
@@ -41,7 +40,7 @@ class EmployeeDetail(generics.RetrieveAPIView):
         user = self.request.user
 
         # Allow access if the user is a supervisor or the employee themselves
-        if hasattr(user, 'employee') and (user.employee.role == "supervisor" or employee.user == user):
+        if hasattr(user, 'employee') and (user.employee.role == "manager" or employee.user == user):
             return employee
         else:
             raise PermissionDenied("You are not authorized to view this employee's details.")
