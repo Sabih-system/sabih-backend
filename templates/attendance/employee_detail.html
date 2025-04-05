@@ -1,0 +1,96 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}Employee Details - {{ employee.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Employee Details</h3>
+        <div>
+            <a href="{% url 'attendance:employee-update' employee.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'attendance:employee-list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Personal Information</h4>
+                <table class="table">
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ employee.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ employee.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone:</th>
+                        <td>{{ employee.phone }}</td>
+                    </tr>
+                    <tr>
+                        <th>Barcode ID:</th>
+                        <td>{{ employee.barcode_id }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h4>Employment Information</h4>
+                <table class="table">
+                    <tr>
+                        <th>Position:</th>
+                        <td>{{ employee.position }}</td>
+                    </tr>
+                    <tr>
+                        <th>Department:</th>
+                        <td>{{ employee.department }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date Hired:</th>
+                        <td>{{ employee.date_hired|date:"F d, Y" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status:</th>
+                        <td>
+                            {% if employee.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Attendance Section -->
+        <div class="mt-4">
+            <h4>Recent Attendance</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in employee.attendance_set.all|slice:":5" %}
+                    <tr>
+                        <td>{{ attendance.date }}</td>
+                        <td>{{ attendance.check_in_time|default:"-" }}</td>
+                        <td>{{ attendance.check_out_time|default:"-" }}</td>
+                        <td><span class="badge bg-{{ attendance.status|lower }}">{{ attendance.get_status_display }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No attendance records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

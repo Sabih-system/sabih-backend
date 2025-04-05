@@ -1,0 +1,62 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}Late Attendance Records{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Late Attendance Records</h2>
+    <a href="{% url 'attendance:late-attendance-create' %}" class="btn btn-primary">Add Late Attendance</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Check In Time</th>
+                <th>Reason</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for late in late_attendances %}
+            <tr>
+                <td>{{ late.employee.name }}</td>
+                <td>{{ late.date }}</td>
+                <td>{{ late.check_in_time }}</td>
+                <td>{{ late.reason|truncatewords:10 }}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#reasonModal{{ late.id }}">
+                        View Reason
+                    </button>
+                </td>
+            </tr>
+
+            <!-- Reason Modal -->
+            <div class="modal fade" id="reasonModal{{ late.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Late Attendance Reason</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Employee:</strong> {{ late.employee.name }}</p>
+                            <p><strong>Date:</strong> {{ late.date }}</p>
+                            <p><strong>Check In Time:</strong> {{ late.check_in_time }}</p>
+                            <p><strong>Reason:</strong></p>
+                            <p>{{ late.reason }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <tr>
+                <td colspan="5">No late attendance records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

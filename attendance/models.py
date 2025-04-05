@@ -13,7 +13,7 @@ class Employee(models.Model):
     department = models.CharField(max_length=100)
     date_hired = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    barcode_id = models.CharField(max_length=20, unique=True)
+    barcode_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.name

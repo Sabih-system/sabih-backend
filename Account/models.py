@@ -11,8 +11,8 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     qr_code_token = models.UUIDField(default=uuid.uuid4, unique=True)
     qr_code_image = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['']
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ['email']
 
     def save(self, *args, **kwargs):
         # Ensure password is hashed if it's being set (typically done by Django automatically)
