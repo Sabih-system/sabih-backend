@@ -1,22 +1,31 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
+from Account.models import User
 
 
-class UsersideRequest(models.Model):
-    company_name = models.CharField(max_length=255)
-    title = models.CharField(max_length=100)
-    name = models.CharField(max_length=255)
-    position = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=15)
-    email_address = models.EmailField()
-    attach_proposal = models.FileField(upload_to='proposals/', null=True, blank=True)
-    work_description = models.TextField(help_text="Describe the work you want us to do.")
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
+class Client ( models.Model ):
+    fname = models.CharField(max_length=100)
+    lname = models.CharField(max_length=100)
+    phone = models.CharField(max_length=50)
+    email = models.EmailField()
+    company = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
+    
+    
     def __str__(self):
-        return f"{self.company_name} - {self.name}"
+        return self.company
+    
+class Project(models.Model):
+    fname = models.CharField(max_length=100)
+    lname = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=50)
+    company = models.CharField(max_length=100)
+    project_type = models.CharField(max_length=200)
+    budget = models.CharField(max_length=200)
+    description = models.CharField(max_length=200)
+    client = models.ForeignKey(Client , on_delete=models.SET_NULL, null=True , related_name="projects")
+    
+    
+    def __str__(self):
+        return f"{self.company}-{self.project_type}"
+    
