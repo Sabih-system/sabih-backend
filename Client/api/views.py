@@ -13,8 +13,7 @@ class IsSupervisor(permissions.BasePermission):
 
     def has_permission(self, request, view):
         try:
-            employee = request.user.team_employee
-            print(employee.role)
+            employee = request.user.employee
             return employee.role.lower() == 'supervisor'
         except Employee.DoesNotExist:
             return False

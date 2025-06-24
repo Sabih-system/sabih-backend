@@ -32,6 +32,7 @@ class Project(models.Model):
     description = models.CharField(max_length=200)
     client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, blank=True, related_name="projects")
     is_approved = models.BooleanField(default=False)  
+    deadline = models.DateField(null=True , blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.company} - {self.project_type}"

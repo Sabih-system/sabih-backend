@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'Team',
     'Account',
     'Client',
+    'communication'
 
 ]
 
