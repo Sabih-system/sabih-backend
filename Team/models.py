@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db import models
 from Account.models import User
 import uuid
-
+from Client.models import Project
 
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
@@ -53,3 +53,23 @@ class Task(models.Model):
         if self.is_completed:
             self.completed_date = timezone.now()
         super().save(*args, **kwargs)
+        
+        
+        
+class ProjectProgress(models.Model):
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, related_name='progress')
+    status = models.CharField(max_length=50, choices=[
+        ('not_started', 'Not Started'),
+        ('in_progress', 'In Progress'),
+        ('review', 'In Review'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ])
+    progress_notes = models.TextField(blank=True)
+    frontend_percent = models.IntegerField(default=0)
+    backend_percent = models.IntegerField(default=0)
+    progress_percent = models.IntegerField(default=0)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Progress for {self.project}"
