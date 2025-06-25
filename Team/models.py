@@ -39,6 +39,7 @@ class Task(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique= True,editable=False)
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True)
     assigner = models.ForeignKey(Employee, on_delete=models.PROTECT, null=True, related_name='assigner')
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, related_name='tasks', null=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     start_date = models.DateTimeField(auto_now_add=True)
