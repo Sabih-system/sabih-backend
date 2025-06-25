@@ -59,7 +59,6 @@ class Task(models.Model):
 class ProjectProgress(models.Model):
     project = models.OneToOneField(Project, on_delete=models.CASCADE, related_name='progress')
     status = models.CharField(max_length=50, choices=[
-        ('not_started', 'Not Started'),
         ('in_progress', 'In Progress'),
         ('review', 'In Review'),
         ('completed', 'Completed'),
